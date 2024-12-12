@@ -33,7 +33,7 @@
             (launcher_coin_puzzle_hash MOD_HASH LAUNCHER_SELF_HASH inner_puzzle_hash amount)
             (c 0 rest)
         ))
-    )strlen
+    )
 
     (defun wrap_conditions (MOD_HASH LAUNCHER_SELF_HASH conditions remaining_amount)
         (if conditions
