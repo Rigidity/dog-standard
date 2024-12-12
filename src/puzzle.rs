@@ -25,20 +25,20 @@ pub struct DogArgs<I> {
 }
 
 impl<I> DogArgs<I> {
-    pub fn new(amount: u128, asset_id: Bytes32, inner_puzzle: I) -> Self {
+    pub fn new(asset_id: Bytes32, inner_puzzle: I) -> Self {
         Self {
             mod_hash: DOG_PUZZLE_HASH.into(),
-            launcher_self_hash: ,
+            launcher_self_hash: DogLauncherSelfArgs::curry_tree_hash(asset_id).into(),
             inner_puzzle,
         }
     }
 }
 
 impl DogArgs<TreeHash> {
-    pub fn curry_tree_hash(amount: u128, asset_id: Bytes32, inner_puzzle: TreeHash) -> TreeHash {
+    pub fn curry_tree_hash(asset_id: Bytes32, inner_puzzle: TreeHash) -> TreeHash {
         CurriedProgram {
             program: DOG_PUZZLE_HASH,
-            args: Self::new(amount, asset_id, inner_puzzle),
+            args: Self::new(asset_id, inner_puzzle),
         }
         .tree_hash()
     }
@@ -58,39 +58,61 @@ pub struct DogSolution<I> {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
 #[clvm(curry)]
-pub struct DogLauncherIdentityArgs {
+pub struct DogLauncherSelfArgs {
     pub asset_id: Bytes32,
+}
+
+impl DogLauncherSelfArgs {
+    pub fn new(asset_id: Bytes32) -> Self {
+        Self { asset_id }
+    }
+
+    pub fn curry_tree_hash(asset_id: Bytes32) -> TreeHash {
+        CurriedProgram {
+            program: DOG_LAUNCHER_HASH,
+            args: Self::new(asset_id),
+        }
+        .tree_hash()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
 #[clvm(curry)]
 pub struct DogLauncherArgs {
-    pub mod_hash: Bytes32,
-    pub amount: u128,
-    pub asset_id: Bytes32,
+    pub launcher_self_hash: Bytes32,
+    pub dog_mod_hash: Bytes32,
+    pub amount: u64,
     pub inner_puzzle_hash: Bytes32,
 }
 
 impl DogLauncherArgs {
-    pub fn new(amount: u128, asset_id: Bytes32, inner_puzzle_hash: Bytes32) -> Self {
+    pub fn new(
+        launcher_self_hash: Bytes32,
+        dog_mod_hash: Bytes32,
+        amount: u64,
+        inner_puzzle_hash: Bytes32,
+    ) -> Self {
         Self {
-            mod_hash: DOG_LAUNCHER_HASH.into(),
+            launcher_self_hash,
+            dog_mod_hash,
             amount,
-            asset_id,
             inner_puzzle_hash,
         }
     }
 }
 
 impl DogLauncherArgs {
-    pub fn curry_tree_hash(
-        amount: u128,
-        asset_id: Bytes32,
-        inner_puzzle_hash: Bytes32,
-    ) -> TreeHash {
+    pub fn curry_tree_hash(asset_id: Bytes32, amount: u64, inner_puzzle_hash: Bytes32) -> TreeHash {
+        let self_hash = DogLauncherSelfArgs::curry_tree_hash(asset_id);
+
         CurriedProgram {
-            program: DOG_LAUNCHER_HASH,
-            args: Self::new(amount, asset_id, inner_puzzle_hash),
+            program: self_hash,
+            args: Self::new(
+                self_hash.into(),
+                DOG_PUZZLE_HASH.into(),
+                amount,
+                inner_puzzle_hash,
+            ),
         }
         .tree_hash()
     }

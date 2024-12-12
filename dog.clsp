@@ -62,7 +62,7 @@
             (list SEND_MESSAGE
                 63 ; coin-coin
                 (concat ANNOUNCEMENT_PREFIX (sha256 next_coin_delta))
-                (coin_id
+                (coinid
                     next_coin_parent_id
                     (curry_hashes MOD_HASH
                         (sha256 1 MOD_HASH)
@@ -83,25 +83,18 @@
         )
     )
 
-    (defun-inline main (inner_conditions my_amount)
-        (c
-            (list RECEIVE_MESSAGE
-                20 ; puzzle hash (sender) -> parent (receiver - this coin)
-                my_amount
-                (launcher_coin_puzzle_hash MOD_HASH LAUNCHER_SELF_HASH (list parent_inner_puzzle_hash parent_amount))
-            )
-            (create_ring
-                (wrap_conditions
-                    MOD_HASH LAUNCHER_SELF_HASH
-                    (a INNER_PUZZLE inner_solution)
-                    (- (+ my_amount prev_coin_delta) next_coin_delta)
-                )
+    (c
+        (list RECEIVE_MESSAGE
+            20 ; puzzle hash (sender) -> parent (receiver - this coin)
+            my_amount
+            (launcher_coin_puzzle_hash MOD_HASH LAUNCHER_SELF_HASH parent_inner_puzzle_hash parent_amount)
+        )
+        (create_ring
+            (wrap_conditions
+                MOD_HASH LAUNCHER_SELF_HASH
+                (a INNER_PUZZLE inner_solution)
+                (- (+ my_amount prev_coin_delta) next_coin_delta)
             )
         )
-    )
-
-    (main
-        (wrap_conditions MOD_HASH LAUNCHER_SELF_HASH (a INNER_PUZZLE inner_solution) (+ prev_coin_delta my_amount))
-        my_amount
     )
 )

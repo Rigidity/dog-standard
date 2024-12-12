@@ -6,7 +6,7 @@
     AMOUNT
     INNER_PUZZLE_HASH
     tail_pack ; (list delta tail_reveal . tail_solution)
-    lineage_proof ; (list parent_parent_id parent_inner_puzzle . parent_amount)
+    (parent_parent_id parent_inner_puzzle . parent_amount)
     my_id
 )
     (include curry.clib)
