@@ -1,0 +1,63 @@
+(mod (
+    TAIL_HASH
+    ; second hash
+    LAUNCHER_SELF_HASH ; curry(mod_hash, tail_hash)
+    DOG_MOD_HASH
+    AMOUNT
+    INNER_PUZZLE_HASH
+    tail_pack ; (list delta tail_reveal . tail_solution)
+    lineage_proof ; (list parent_parent_id parent_inner_puzzle . parent_amount)
+    my_id
+)
+    (include curry.clib)
+    (include condition_codes.clib)
+    (include sha256tree.clib)
+
+    (defun-inline main (dog_full_puzzle_hash new_amount base_conditions)
+        (c (list CREATE_COIN dog_full_puzzle_hash new_amount)
+            (c (list ASSERT_MY_COIN_ID my_id)
+                (c
+                    (list SEND_MESSAGE
+                        20 ; puzzle hash -> parent
+                        new_amount
+                        my_id
+                    )
+                    base_conditions
+                )
+            )
+        )
+    )
+
+    (main
+        (curry_hashes_inline DOG_MOD_HASH
+            (sha256 1 DOG_MOD_HASH)
+            (sha256 1 LAUNCHER_SELF_HASH)
+            INNER_PUZZLE_HASH
+        )
+        (+ AMOUNT (if tail_pack (f tail_pack) 0))
+        (if tail_pack
+            (a
+                (f (r tail_pack))
+                (c
+                    (list TAIL_HASH LAUNCHER_SELF_HASH DOG_MOD_HASH AMOUNT INNER_PUZZLE_HASH (f tail_pack) my_id)
+                    (r (r tail_pack))
+                )
+            )
+            ; else
+            (list
+                (list
+                    ASSERT_MY_PARENT_ID
+                    (coinid
+                        parent_parent_id
+                        (curry_hashes DOG_MOD_HASH
+                            (sha256 1 DOG_MOD_HASH)
+                            (sha256 1 LAUNCHER_SELF_HASH)
+                            parent_inner_puzzle
+                        )
+                        parent_amount
+                    )
+                )
+            )
+        )
+    )
+)

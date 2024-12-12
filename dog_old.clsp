@@ -1,0 +1,66 @@
+; https://github.com/Chia-Network/chia-blockchain/blob/main/chia/wallet/cat_wallet/puzzles/cat_v2.clsp
+
+(mod (
+        MOD_HASH
+        TAIL_HASH
+        AMOUNT
+        INNER_PUZZLE
+        lineage_proof ; (parent_parent_coin_id parent_inner_puzzle_hash . parent_amount)
+        inner_solution
+    )
+
+    (include curry.clib)
+
+    ; Takes the mod_struct, amount, and inner puzzle hash and returns the wrapped puzzle hash
+    (defun wrap_puzzle_hash ((MOD_HASH MOD_HASH_HASH TAIL_HASH) AMOUNT inner_puzzle_hash)
+        (curry_hashes MOD_HASH MOD_HASH_HASH (sha256 1 TAIL_HASH) (sha256 1 AMOUNT) inner_puzzle_hash)
+    )
+
+    ; Wraps a single create coin condition
+    (defun wrap_create_coin (mod_struct (puzzle_hash amount . rest))
+        (c CREATE_COIN
+            (wrap_puzzle_hash mod_struct amount puzzle_hash)
+            (c amount rest)
+        )
+    )
+
+    (defun wrap_conditions (mod_struct conds remaining_amount lineage_proof tail_reveal_and_solution)
+        (if conds
+            (if (= (f (f conds) CREATE_COIN)
+                (c
+                    (wrap_create_coin mod_struct (r (f conds)))
+                    (wrap_conditions mod_struct (r conds) (- remaining_amount (f (r (r (f conds)))) lineage_proof ()))
+                )
+                ; else
+                (if (= (f (f conds) -113)
+                 (wrap_conditions mod_struct (r conds) created_amount lineage_proof (r (f conds)))
+                 ; else
+                 (c (f conds) (wrap_conditions mod_struct (r conds) created_amount lineage_proof ()))
+                )
+            )
+            ; else
+            (if lineage_proof
+                (list
+                    (list ASSERT_MY_PARENT_ID
+                        (coinid
+                            (f lineage_proof)
+                            (wrap_puzzle_hash mod_struct (r (r lineage_proof)) (f (r lineage_proof)))
+                            0
+                        )
+                    )
+                )
+                ; else
+
+            )
+        )
+    )
+
+
+    (wrap_conditions
+        (c MOD_HASH (c (sha256 1 MOD_HASH) TAIL_HASH))
+        (a INNER_PUZZLE inner_solution)
+        AMOUNT
+        lineage_proof
+        ()
+    )
+)
