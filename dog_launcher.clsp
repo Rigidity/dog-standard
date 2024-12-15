@@ -55,8 +55,10 @@
             (if tail_pack
                 (a
                     (f (r tail_pack))
-                    (c
-                        (list TAIL_HASH LAUNCHER_SELF_HASH DOG_MOD_HASH AMOUNT INNER_PUZZLE_HASH (f tail_pack) my_id)
+                    (list
+                        TAIL_HASH LAUNCHER_SELF_HASH DOG_MOD_HASH AMOUNT INNER_PUZZLE_HASH
+                        (f (r tail_pack))
+                        my_id
                         (r (r tail_pack))
                     )
                 )
