@@ -107,7 +107,7 @@ impl DogLauncherArgs {
 impl DogLauncherArgs {
     pub fn curry_tree_hash(asset_id: Bytes32, amount: u64, inner_puzzle_hash: Bytes32) -> TreeHash {
         CurriedProgram {
-            program: Bytes32::from(DogLauncherSelfArgs::curry_tree_hash(asset_id)).tree_hash(),
+            program: DogLauncherSelfArgs::curry_tree_hash(asset_id),
             args: Self::new_outer(asset_id, amount, inner_puzzle_hash),
         }
         .tree_hash()

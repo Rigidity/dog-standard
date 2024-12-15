@@ -284,16 +284,17 @@ mod tests {
             my_amount: ephemeral_coin.amount,
         })?;
 
-        // println!(
-        //     "Launcher: {:?} {:?}",
-        //     ctx.serialize(&launcher_puzzle)?,
-        //     ctx.serialize(&launcher_solution)?
-        // );
         println!(
-            "Ephemeral: {:?} {:?}",
-            ctx.serialize(&puzzle)?,
-            ctx.serialize(&solution)?
+            "Launcher: {:?} {:?}",
+            ctx.serialize(&launcher_puzzle)?,
+            ctx.serialize(&launcher_solution)?
         );
+        println!("Launcher coin id: {:?}", launcher_coin.coin_id());
+        // println!(
+        //     "Ephemeral: {:?} {:?}",
+        //     ctx.serialize(&puzzle)?,
+        //     ctx.serialize(&solution)?
+        // );
 
         ctx.spend(
             launcher_coin,
