@@ -35,16 +35,10 @@
             INNER_PUZZLE_HASH
         )
         (+ AMOUNT (if tail_pack (f tail_pack) 0))
-        (if tail_pack
-            (a
-                (f (r tail_pack))
-                (c
-                    (list TAIL_HASH LAUNCHER_SELF_HASH DOG_MOD_HASH AMOUNT INNER_PUZZLE_HASH (f tail_pack) my_id)
-                    (r (r tail_pack))
-                )
-            )
-            ; else
-            (list
+        (c 
+            (if (= AMOUNT 0)
+                (list REMARK)
+                ; else
                 (list
                     ASSERT_MY_PARENT_ID
                     (coinid
@@ -57,6 +51,17 @@
                         parent_amount
                     )
                 )
+            )
+            (if tail_pack
+                (a
+                    (f (r tail_pack))
+                    (c
+                        (list TAIL_HASH LAUNCHER_SELF_HASH DOG_MOD_HASH AMOUNT INNER_PUZZLE_HASH (f tail_pack) my_id)
+                        (r (r tail_pack))
+                    )
+                )
+                ; else
+                ()
             )
         )
     )
