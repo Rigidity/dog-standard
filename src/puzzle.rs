@@ -1,17 +1,17 @@
 use chia::{
     clvm_traits::{self, FromClvm, ToClvm},
     clvm_utils::{CurriedProgram, ToTreeHash, TreeHash},
-    protocol::{Bytes32, Coin},
+    protocol::Bytes32,
     puzzles::{CoinProof, LineageProof},
 };
 use hex_literal::hex;
 
-pub const DOG_PUZZLE: [u8; 1701] = hex!("ff02ffff01ff02ff5effff04ff02ffff04ffff04ff05ffff04ffff0bffff0101ff0580ffff04ff17ff80808080ffff04ffff02ff2fff5f80ffff04ff81bfffff04ffff02ff2effff04ff02ffff04ff2fff80808080ffff04ffff30ff8204ffff820affff8216ff80ffff04ff82017fffff04ff8202ffffff04ff8205ffffff04ff820bffffff04ff8217ffff80808080808080808080808080ffff04ffff01ffffffff3d46ff333cffff81cb02ffff02ffff03ff05ffff01ff0bff81f2ffff02ff26ffff04ff02ffff04ff09ffff04ffff02ff2cffff04ff02ffff04ff0dff80808080ff808080808080ffff0181d280ff0180ff02ffff03ff0bffff01ff02ffff03ffff09ffff02ff2effff04ff02ffff04ff13ff80808080ff820b9f80ffff01ff02ff36ffff04ff02ffff04ffff02ff13ffff04ff5fffff04ff17ffff04ff2fffff04ff81bfffff04ff82017fffff04ff1bff8080808080808080ffff04ff82017fff8080808080ffff01ff088080ff0180ffff01ff02ffff03ff17ffff01ff02ffff03ffff20ff81bf80ffff0182017fffff01ff088080ff0180ffff01ff088080ff018080ff0180ffffffff04ffff04ff05ff2780ffff04ffff10ff0bff5780ff778080ffffa04bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459aa09dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2ffa102a12871fee210fb8619291eaea194581cbd2531e4b23759d225f6806923f63222a102a8d5dd63fba471ebcb1f3e8f7c1e1879b7152a6e7298a91ce119a63400ade7c5ffff0bff81b2ffff02ff26ffff04ff02ffff04ff05ffff04ffff02ff2cffff04ff02ffff04ff07ff80808080ff808080808080ff02ffff03ff05ffff01ff02ffff03ffff09ffff02ffff03ffff09ff11ff2880ffff0159ff8080ff0180ffff01818f80ffff01ff02ff3affff04ff02ffff04ff0dffff04ff0bffff04ffff04ff81b9ff82017980ff808080808080ffff01ff02ff22ffff04ff02ffff04ffff02ffff03ffff09ff11ff2880ffff01ff04ff28ffff04ffff02ff2affff04ff02ffff04ff13ffff04ff2bffff04ffff0bffff0101ff5980ffff04ffff0bffff0101ff5b80ffff04ff29ff8080808080808080ffff04ff80ff79808080ffff01ff02ffff03ffff09ff11ff3880ffff01ff02ffff03ffff20ffff02ffff03ffff09ffff0121ffff0dff298080ffff01ff02ffff03ffff09ffff0cff29ff80ffff010180ff2480ffff01ff0101ff8080ff0180ff8080ff018080ffff0109ffff01ff088080ff0180ffff010980ff018080ff0180ffff04ffff02ffff03ffff09ff11ff2880ffff0159ff8080ff0180ffff04ffff02ff3affff04ff02ffff04ff0dffff04ff0bffff04ff17ff808080808080ff80808080808080ff0180ffff01ff04ff80ffff04ff80ff17808080ff0180ffffff0bff34ffff0bff34ff81d2ff0580ffff0bff34ff0bff81928080ff02ffff03ff05ffff01ff04ff09ffff02ff36ffff04ff02ffff04ff0dffff04ff0bff808080808080ffff010b80ff0180ffff02ffff03ffff07ff0580ffff01ff0bffff0102ffff02ff2effff04ff02ffff04ff09ff80808080ffff02ff2effff04ff02ffff04ff0dff8080808080ffff01ff0bffff0101ff058080ff0180ffff04ffff04ff30ffff04ff5fff808080ffff02ff7effff04ff02ffff04ffff04ffff04ff2fff0580ffff04ff5fff82017f8080ffff04ffff02ff3affff04ff02ffff04ff0bffff04ff05ffff01ff808080808080ffff04ff17ffff04ff81bfffff04ff82017fffff04ffff30ff8204ffffff02ff2affff04ff02ffff04ff09ffff04ff15ffff04ffff0bffff0101ff8216ff80ffff04ffff0bffff0101ff2d80ffff04ff820affff8080808080808080ff8080ffff04ff8205ffffff04ff820bffff808080808080808080808080ff02ff3cffff04ff02ffff04ff5fffff04ff3bffff04ffff02ffff03ff17ffff01ff09ff2dffff30ff27ffff02ff2affff04ff02ffff04ff29ffff04ff59ffff04ffff0bffff0101ff81b780ffff04ffff0bffff0101ff81b980ffff04ff57ff8080808080808080ff81b78080ff8080ff0180ffff04ff17ffff04ff05ffff04ff8202ffffff04ffff04ffff04ff38ffff04ffff0eff24ffff02ff2effff04ff02ffff04ffff04ff2fffff04ff82017fff808080ff8080808080ff808080ffff04ffff04ff20ffff04ffff0bff81bfff24ffff02ff2effff04ff02ffff04ffff04ff15ffff04ffff10ff82017fffff11ff8202dfff2b80ff8202ff80ff808080ff8080808080ff808080ff138080ff80808080808080808080ff018080");
+pub const DOG_PUZZLE: [u8; 985] = hex!("ff02ffff01ff04ffff04ff14ffff04ffff0114ffff04ff820bffffff04ffff02ff16ffff04ff02ffff04ff0bffff04ffff0bffff0101ff0b80ffff04ffff0bffff0101ff0580ffff04ffff0bffff0101ff6f80ffff04ffff0bffff0101ff4f80ff8080808080808080ff8080808080ffff04ffff04ff2cffff04ffff013fffff04ffff0eff10ffff0bff81bf8080ffff04ffff30ff8209ffffff02ff16ffff04ff02ffff04ff05ffff04ffff0bffff0101ff0580ffff04ffff0bffff0101ff0b80ffff04ff8215ffff80808080808080ff822dff80ff8080808080ffff04ffff04ff14ffff04ffff013fffff04ffff0eff10ffff0bff82017f8080ffff04ff8202ffff8080808080ffff02ff3effff04ff02ffff04ff05ffff04ff0bffff04ffff02ff17ff5f80ffff04ffff11ffff10ff820bffff82017f80ff81bf80ff80808080808080808080ffff04ffff01ffffff81d033ff43ff4202ffffff02ffff03ff05ffff01ff0bff81eaffff02ff2effff04ff02ffff04ff09ffff04ffff02ff12ffff04ff02ffff04ff0dff80808080ff808080808080ffff0181ca80ff0180ffffffa04bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459aa09dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2ffa102a12871fee210fb8619291eaea194581cbd2531e4b23759d225f6806923f63222a102a8d5dd63fba471ebcb1f3e8f7c1e1879b7152a6e7298a91ce119a63400ade7c5ff04ff18ffff04ffff02ff16ffff04ff02ffff04ff0bffff04ffff0bffff0101ff0b80ffff04ffff0bffff0101ff0580ffff04ffff0bffff0101ff5780ffff04ffff0bffff0101ff2780ff8080808080808080ffff04ff80ff77808080ffff0bff81aaffff02ff2effff04ff02ffff04ff05ffff04ffff02ff12ffff04ff02ffff04ff07ff80808080ff808080808080ffff0bff3cffff0bff3cff81caff0580ffff0bff3cff0bff818a8080ff02ffff03ff17ffff01ff02ffff03ffff09ff47ff1880ffff01ff04ffff02ff3affff04ff02ffff04ff05ffff04ff0bffff04ff67ff808080808080ffff02ff3effff04ff02ffff04ff05ffff04ff0bffff04ff37ffff04ffff11ff2fff81a780ff8080808080808080ffff01ff02ffff03ffff22ffff21ffff09ff47ff1480ffff09ff47ff2c8080ffff09ff81a7ffff013f80ffff09ffff0dff82016780ffff012180ffff09ffff0cff820167ff80ffff010180ff108080ffff01ff0880ffff01ff04ff27ffff02ff3effff04ff02ffff04ff05ffff04ff0bffff04ff37ffff04ff2fff808080808080808080ff018080ff0180ffff01ff088080ff0180ff018080");
 pub const DOG_PUZZLE_HASH: TreeHash = TreeHash::new(hex!(
-    "a7d7c35be0c9f6b6b743fc386bc635af8b42b18cc11e77359f94abf9ba1f92d0"
+    "2a76033e90c6bcabdf251fba4b3a95d5bcae83ae437945e66e7db9ce99ef3c27"
 ));
 
-pub const DOG_LAUNCHER: [u8; 0] = hex!("");
+pub const DOG_LAUNCHER: [u8; 736] = hex!("ff02ffff01ff04ffff04ff14ffff04ffff0bff56ffff0bff12ffff0bff12ff66ff1780ffff0bff12ffff0bff76ffff0bff12ffff0bff12ff66ffff0bffff0101ff178080ffff0bff12ffff0bff76ffff0bff12ffff0bff12ff66ffff0bffff0101ff0b8080ffff0bff12ffff0bff76ffff0bff12ffff0bff12ff66ff5f80ffff0bff12ff66ff46808080ff46808080ff46808080ff46808080ffff04ffff10ff2fffff02ffff03ff81bfffff0182013fff8080ff018080ff80808080ffff04ffff04ff10ffff04ff8202ffff808080ffff04ffff04ff1cffff04ffff0114ffff04ffff10ff2fffff02ffff03ff81bfffff0182013fff8080ff018080ffff04ff8202ffff8080808080ffff02ffff03ff81bfffff01ff02ff8202bfffff04ffff04ff05ffff04ff0bffff04ff17ffff04ff2fffff04ff5fffff04ff82013fffff04ff8202ffff8080808080808080ff8203bf8080ffff01ff04ffff04ff18ffff04ffff30ff82027fffff02ff2effff04ff02ffff04ff17ffff04ffff0bffff0101ff1780ffff04ffff0bffff0101ff0b80ffff04ff82057fff80808080808080ff820b7f80ff808080ff808080ff0180808080ffff04ffff01ffffff4647ff3342ffff02ff02ffff03ff05ffff01ff0bff76ffff02ff3effff04ff02ffff04ff09ffff04ffff02ff1affff04ff02ffff04ff0dff80808080ff808080808080ffff016680ff0180ffffffa04bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459aa09dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2ffa102a12871fee210fb8619291eaea194581cbd2531e4b23759d225f6806923f63222a102a8d5dd63fba471ebcb1f3e8f7c1e1879b7152a6e7298a91ce119a63400ade7c5ffff0bff56ffff02ff3effff04ff02ffff04ff05ffff04ffff02ff1affff04ff02ffff04ff07ff80808080ff808080808080ff0bff12ffff0bff12ff66ff0580ffff0bff12ff0bff468080ff018080");
 pub const DOG_LAUNCHER_HASH: TreeHash = TreeHash::new(hex!(
     "a7d7c35be0c9f6b6b743fc386bc635af8b42b18cc11e77359f94abf9ba1f92d0"
 ));
@@ -45,15 +45,23 @@ impl DogArgs<TreeHash> {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
+#[clvm(list)]
+pub struct LauncherProof {
+    pub parent_inner_puzzle_hash: Bytes32,
+    #[clvm(rest)]
+    pub parent_amount: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
 #[clvm(solution)]
 pub struct DogSolution<I> {
-    pub inner_puzzle_solution: I,
-    pub lineage_proof: Option<LineageProof>,
+    pub launcher_proof: LauncherProof,
+    pub inner_solution: I,
+    pub next_coin_delta: i64,
+    pub prev_coin_delta: i64,
     pub prev_coin_id: Bytes32,
-    pub this_coin_info: Coin,
     pub next_coin_proof: CoinProof,
-    pub prev_subtotal: i64,
-    pub extra_delta: i64,
+    pub my_amount: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
@@ -86,15 +94,10 @@ pub struct DogLauncherArgs {
 }
 
 impl DogLauncherArgs {
-    pub fn new(
-        launcher_self_hash: Bytes32,
-        dog_mod_hash: Bytes32,
-        amount: u64,
-        inner_puzzle_hash: Bytes32,
-    ) -> Self {
+    pub fn new_outer(asset_id: Bytes32, amount: u64, inner_puzzle_hash: Bytes32) -> Self {
         Self {
-            launcher_self_hash,
-            dog_mod_hash,
+            launcher_self_hash: DogLauncherSelfArgs::curry_tree_hash(asset_id).into(),
+            dog_mod_hash: DOG_PUZZLE_HASH.into(),
             amount,
             inner_puzzle_hash,
         }
@@ -103,28 +106,27 @@ impl DogLauncherArgs {
 
 impl DogLauncherArgs {
     pub fn curry_tree_hash(asset_id: Bytes32, amount: u64, inner_puzzle_hash: Bytes32) -> TreeHash {
-        let self_hash = DogLauncherSelfArgs::curry_tree_hash(asset_id);
-
         CurriedProgram {
-            program: self_hash,
-            args: Self::new(
-                self_hash.into(),
-                DOG_PUZZLE_HASH.into(),
-                amount,
-                inner_puzzle_hash,
-            ),
+            program: Bytes32::from(DogLauncherSelfArgs::curry_tree_hash(asset_id)).tree_hash(),
+            args: Self::new_outer(asset_id, amount, inner_puzzle_hash),
         }
         .tree_hash()
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
+#[clvm(list)]
+pub struct TailPack<P, S> {
+    pub delta: i64,
+    pub tail_reveal: P,
+    #[clvm(rest)]
+    pub tail_solution: S,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ToClvm, FromClvm)]
 #[clvm(solution)]
-pub struct DogLauncherSolution {
+pub struct DogLauncherSolution<P, S> {
+    pub tail_pack: Option<TailPack<P, S>>,
     pub lineage_proof: Option<LineageProof>,
-    pub prev_coin_id: Bytes32,
-    pub this_coin_info: Coin,
-    pub next_coin_proof: CoinProof,
-    pub prev_subtotal: i64,
-    pub extra_delta: i64,
+    pub my_id: Bytes32,
 }

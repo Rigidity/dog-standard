@@ -11,7 +11,7 @@
     next_coin_delta
     prev_coin_delta
     prev_coin_id
-    (next_coin_parent_id next_coin_inner_puzzle_hash . next_coin_amount) ; next_coin_proof
+    (next_coin_parent_id next_coin_inner_puzzle_hash next_coin_amount) ; next_coin_proof
     my_amount
 )
     (include curry.clib)

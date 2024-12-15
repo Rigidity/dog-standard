@@ -6,7 +6,7 @@
     AMOUNT
     INNER_PUZZLE_HASH
     tail_pack ; (list delta tail_reveal . tail_solution)
-    (parent_parent_id parent_inner_puzzle . parent_amount)
+    (parent_parent_id parent_inner_puzzle_hash parent_amount)
     my_id
 )
     (include curry.clib)
@@ -52,7 +52,7 @@
                         (curry_hashes DOG_MOD_HASH
                             (sha256 1 DOG_MOD_HASH)
                             (sha256 1 LAUNCHER_SELF_HASH)
-                            parent_inner_puzzle
+                            parent_inner_puzzle_hash
                         )
                         parent_amount
                     )
