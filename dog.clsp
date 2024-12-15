@@ -48,12 +48,12 @@
                     (= (strlen (f (r (r (f conditions))))) 33)
                     (= (substr (f (r (r (f conditions)))) 0 1) ANNOUNCEMENT_PREFIX)
                 )
-                    (x)
+                    (x "xyz")
                     ; else
                     (c (f conditions) (wrap_conditions MOD_HASH LAUNCHER_SELF_HASH (r conditions) remaining_amount))
                 )
             )
-            (if (= delta 0) () (x))
+            (if (= delta 0) () (x "abc"))
         )
     )
 

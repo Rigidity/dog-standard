@@ -11,7 +11,6 @@ use puzzle::{
 };
 
 mod puzzle;
-mod thing;
 
 #[derive(Debug, Clone, Copy)]
 pub struct DogSpend {
@@ -149,6 +148,17 @@ impl Dog {
             my_amount: self.ephemeral_coin.amount,
         })?;
 
+        println!(
+            "Launcher: {:?} {:?}",
+            ctx.serialize(&launcher_puzzle)?,
+            ctx.serialize(&launcher_solution)?
+        );
+        println!(
+            "Ephemeral: {:?} {:?}",
+            ctx.serialize(&puzzle)?,
+            ctx.serialize(&solution)?
+        );
+
         ctx.spend(
             self.launcher_coin,
             Spend::new(launcher_puzzle, launcher_solution),
@@ -198,6 +208,7 @@ impl Dog {
 mod tests {
     use chia::clvm_utils::ToTreeHash;
     use chia_wallet_sdk::{Conditions, Simulator, SpendWithConditions, StandardLayer};
+    use puzzle::TailPack;
 
     use super::*;
 
@@ -237,7 +248,11 @@ mod tests {
         })?;
 
         let launcher_solution = ctx.alloc(&DogLauncherSolution::<NodePtr, NodePtr> {
-            tail_pack: None,
+            tail_pack: Some(TailPack {
+                delta: 1,
+                tail_reveal: NodePtr::NIL,
+                tail_solution: NodePtr::NIL,
+            }),
             lineage_proof: None,
             my_id: launcher_coin.coin_id(),
         })?;
@@ -268,6 +283,17 @@ mod tests {
             },
             my_amount: ephemeral_coin.amount,
         })?;
+
+        println!(
+            "Launcher: {:?} {:?}",
+            ctx.serialize(&launcher_puzzle)?,
+            ctx.serialize(&launcher_solution)?
+        );
+        println!(
+            "Ephemeral: {:?} {:?}",
+            ctx.serialize(&puzzle)?,
+            ctx.serialize(&solution)?
+        );
 
         ctx.spend(
             launcher_coin,
