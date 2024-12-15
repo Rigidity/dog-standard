@@ -223,7 +223,7 @@ mod tests {
         let asset_id = tail.tree_hash().into();
 
         let launcher_puzzle_hash =
-            DogLauncherArgs::curry_tree_hash(asset_id, 1, puzzle_hash).into();
+            DogLauncherArgs::curry_tree_hash(asset_id, 0, puzzle_hash).into();
 
         p2.spend(
             ctx,
