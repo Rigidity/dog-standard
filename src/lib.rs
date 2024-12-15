@@ -284,11 +284,11 @@ mod tests {
             my_amount: ephemeral_coin.amount,
         })?;
 
-        println!(
-            "Launcher: {:?} {:?}",
-            ctx.serialize(&launcher_puzzle)?,
-            ctx.serialize(&launcher_solution)?
-        );
+        // println!(
+        //     "Launcher: {:?} {:?}",
+        //     ctx.serialize(&launcher_puzzle)?,
+        //     ctx.serialize(&launcher_solution)?
+        // );
         println!(
             "Ephemeral: {:?} {:?}",
             ctx.serialize(&puzzle)?,
