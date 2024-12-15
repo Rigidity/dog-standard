@@ -244,7 +244,7 @@ mod tests {
                 program: launcher_mod,
                 args: DogLauncherSelfArgs::new(asset_id),
             },
-            args: DogLauncherArgs::new_outer(asset_id, 1, puzzle_hash),
+            args: DogLauncherArgs::new_outer(asset_id, 0, puzzle_hash),
         })?;
 
         let launcher_solution = ctx.alloc(&DogLauncherSolution::<NodePtr, NodePtr> {
