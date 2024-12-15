@@ -36,7 +36,7 @@
         )
         (+ AMOUNT (if tail_pack (f tail_pack) 0))
         (c 
-            (if (= AMOUNT 0)
+            (if (all (= AMOUNT 0) tail_pack)
                 (list REMARK)
                 ; else
                 (list
