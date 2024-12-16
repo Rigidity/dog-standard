@@ -40,7 +40,7 @@
             (if (= (f (f conditions)) CREATE_COIN)
                 (c
                     (create_launcher_coin MOD_HASH LAUNCHER_SELF_HASH (r (f conditions)))
-                    (wrap_conditions MOD_HASH LAUNCHER_SELF_HASH (r conditions) (- remaining_amount (f (r (f conditions)))))
+                    (wrap_conditions MOD_HASH LAUNCHER_SELF_HASH (r conditions) (- remaining_amount (f (r (r (f conditions))))))
                 )
                 (if (all
                     (any (= (f (f conditions)) RECEIVE_MESSAGE) (= (f (f conditions)) SEND_MESSAGE))
@@ -53,7 +53,7 @@
                     (c (f conditions) (wrap_conditions MOD_HASH LAUNCHER_SELF_HASH (r conditions) remaining_amount))
                 )
             )
-            (if (= delta 0) () (x "abc"))
+            (if (= remaining_amount 0) () (x "abc"))
         )
     )
 

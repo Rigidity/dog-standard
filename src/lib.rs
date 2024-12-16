@@ -268,7 +268,7 @@ mod tests {
         let solution = ctx.alloc(&DogSolution {
             launcher_proof: LauncherProof {
                 parent_inner_puzzle_hash: puzzle_hash,
-                parent_amount: coin.amount,
+                parent_amount: 0,
             },
             inner_solution: spend.solution,
             next_coin_delta: 0,
@@ -282,16 +282,20 @@ mod tests {
             my_amount: ephemeral_coin.amount,
         })?;
 
-        println!(
-            "Launcher: {:?} {:?}",
-            ctx.serialize(&launcher_puzzle)?,
-            ctx.serialize(&launcher_solution)?
-        );
-        println!(
-            "Ephemeral: {:?} {:?}",
-            ctx.serialize(&puzzle)?,
-            ctx.serialize(&solution)?
-        );
+        // ----
+        let launcher_output = ctx.run(launcher_puzzle, launcher_solution)?;
+        println!("Launcher output: {:?}", ctx.serialize(&launcher_output)?);
+        println!("Launcher coin id: {:?}", launcher_coin.coin_id());
+        println!("Launcher puzzle hash: {:?}", launcher_coin.puzzle_hash);
+
+        let dog_output = ctx.run(puzzle, solution)?;
+        println!("Dog output: {:?}", ctx.serialize(&dog_output)?);
+        // println!(
+        //     "Ephemeral: {:?} {:?}",
+        //     ctx.serialize(&puzzle)?,
+        //     ctx.serialize(&solution)?
+        // );
+        // ----
 
         ctx.spend(
             launcher_coin,
