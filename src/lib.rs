@@ -75,7 +75,7 @@ impl Dog {
 
             let create_coins = conditions
                 .into_iter()
-                .filter_map(|ptr| ctx.extract::<CreateCoin>(ptr).ok());
+                .filter_map(|ptr| ctx.extract::<CreateCoin<NodePtr>>(ptr).ok());
 
             let delta = create_coins.fold(
                 i128::from(dog.ephemeral_coin.amount),
@@ -228,7 +228,7 @@ mod tests {
         p2.spend(
             ctx,
             coin,
-            Conditions::new().create_coin(launcher_puzzle_hash, 0, Vec::new()),
+            Conditions::new().create_coin(launcher_puzzle_hash, 0, None),
         )?;
         let launcher_coin = Coin::new(coin.coin_id(), launcher_puzzle_hash, 0);
         let dog_puzzle_hash = DogArgs::curry_tree_hash(asset_id, puzzle_hash.into()).into();
@@ -257,10 +257,8 @@ mod tests {
             my_id: launcher_coin.coin_id(),
         })?;
 
-        let spend = p2.spend_with_conditions(
-            ctx,
-            Conditions::new().create_coin([0; 32].into(), 1, Vec::new()),
-        )?;
+        let spend =
+            p2.spend_with_conditions(ctx, Conditions::new().create_coin([0; 32].into(), 1, None))?;
 
         let puzzle = ctx.alloc(&CurriedProgram {
             program: dog_mod,
